@@ -1,21 +1,27 @@
-
+//
+var works = []
 
 fetch("http://localhost:5678/api/works")
   .then((response) => response.json())
   .then((data ) => {
-    createGallery(data)
+    createGallery(data) //
+    works = data
 });
 
+
+
 function createGallery(data) {
+    document.getElementById("gallery").innerHTML = "";
     data.forEach(work => {
         
     // create a new div element
+        
         const figure = document.createElement("figure");
         
         const newDiv = document.createElement("figcaption");
         const newTitle = document.createTextNode(work.title);
         newDiv.appendChild(newTitle);
-        console.log(newDiv)
+        
         
 
         const img = document.createElement("img");
@@ -39,12 +45,28 @@ fetch("http://localhost:5678/api/categories")
 
 function createFiltersPerCategories(data) {
     const newSelectFilters = document.createElement("select");
+    newSelectFilters.id = "filtreCategories"
+    newSelectFilters.onchange = filterWorks;
+    var optionString = ""
     data.forEach(categorie => {
-        const newIdCategory = document.createElement("option");
-        const newTextCategory = document.createTextNode(categorie.name);
-        newIdCategory.value = categorie.id;
-        newIdCategory.appendChild(newTextCategory);
-        newSelectFilters.appendChild(newIdCategory);
+        optionString += '<option value="'+ categorie.id + '" onclick="filterWorks(this);">'+categorie.name+'</option>'
+            // const optionElement = document.createElement("option");
+            // const newTextCategory = document.createTextNode(categorie.name);
+            // optionElement.value = categorie.id;
+            
+
+            // optionElement.appendChild(newTextCategory);
+        
+        
     })
+    newSelectFilters.innerHTML = optionString;
     document.getElementById("portfolio").appendChild(newSelectFilters);
+}
+
+function filterWorks(param) {
+    const selectCategorieElements = document.getElementById("filtreCategories");
+    var idSelectedFilter = selectCategorieElements.options[selectCategorieElements.selectedIndex].value;
+    console.log(works);
+    var filteredWorks = works.filter(work => work.categoryId == idSelectedFilter);
+    createGallery(filteredWorks);
 }
