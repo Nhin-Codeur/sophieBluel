@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<script src="https://kit.fontawesome.com/a0f037361c.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/14d7dae5ef.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<script src="index.js" defer></script>
+	<script src="DOMFactory.js" defer ></script>
+	<script src="service.js" defer ></script>
+	<script src="index.js" defer ></script>
 	<meta charset="UTF-8">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,10 +18,56 @@
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+	<div class="modal" id="myModal">
 	
-	<div class="adminHeader"> 
+		<div id="modal-content" class="modal-content">
+			
+			<div class="top-modal">
+				<span class="close" >&times;</span>
+				<span class="modaleTitle"> Galerie photo </span>
+			</div>
+
+			<div id="galleryModale" class="galleryModale">	
+			</div>
+			<div class="ligneModale"> </div>
+
+			<div class="bottom-modal">
+				<button class="buttonModale" id="buttonAddPhoto""> Ajouter une photo </button>
+				<span class="supprGallery" > Supprimer la gallerie </span>
+			</div>
+		</div>
 		
-		<div class="modeEdition" onclick="editor()"> <i class="fa-regular fa-pen-to-square"></i> Mode édition </div>
+	</div>
+	<div class="modal" id="myModal2">
+		<div id="addPhotoModale" class="modal-content">
+				<div class="top-modal">
+					<i class="fa-solid fa-arrow-left returnButton" id="returnButton"> </i>
+					<span class="close">&times;</span>
+					<span class="modaleTitle"> Ajout photo </span>
+				</div>
+				<div class="middle-modal"> 
+					<i class="fa-regular fa-images" id="prevImage"></i>
+					<label for="file" class="fileUploadLabel"> + Ajouter photo </label>
+					<input type="file" id="file"/>
+					<span class="sizePhotoMax"> jpg, png : 4mo max </span>
+					<span class="errorMsg" id="errorImg"></span>
+				</div>
+				<div class="bottom-modal">
+					<span class="labelInput" > Titre </span>
+					<input class="inputModale" id="titleWork"  type="text">
+					<span class="errorMsg" id="errorTitle"></span>
+					<span class="labelInput" > Catégorie </span>
+					<select class="inputModale" id="categoryWork" type="text">
+						
+					</select>
+					<span id="errorCat"></span>
+					<div class="ligneModale"> </div>
+					<button class="buttonModale" id="buttonAddToGallery"> Valider </button>
+				</div>
+		</div>
+	</div>
+	<div class="adminHeader" id="adminHeader"> 
+		<div class="modeEdition" id="modeEdition"> <i class="fa-regular fa-pen-to-square"></i> Mode édition </div>
 		<div class="publishChanges"> Publier les changements </div>
 	</div>
 	<div class="centeredPage">
@@ -30,7 +78,7 @@
 					<li>projets</li>
 					<li>contact</li>
 					<li>
-						<a href="login.html">login</a>
+						<a href="login.html" id="loginButton">login</a>
 					</li>
 					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 				</ul>
@@ -40,10 +88,9 @@
 			<section id="introduction">
 				<figure>
 					<img src="./assets/images/sophie-bluel.png" alt="">
-					<div class="modify"> <i class="fa-regular fa-pen-to-square bottomIcon"></i> modifier </div>
+					<div class="modify modifyIntro"> <i class="fa-regular fa-pen-to-square bottomIcon"></i> modifier </div>
 				</figure>
 				<article>
-					<div class="modify"> <i class="fa-regular fa-pen-to-square bottomIcon"></i> modifier </div>
 					<h2>Designer d'espace</h2>
 					<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 					<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
@@ -51,9 +98,14 @@
 				</article>
 			</section>
 			<section id="portfolio">
-				<h2>Mes Projets </h2>
-				<div class="modify"> <i class="fa-regular fa-pen-to-square bottomIcon"></i> modifier </div>
+				<div class="mesProjetsEtModifier">
+					<h2 class="">Mes Projets </h2>
+					<div id = "modifymodale" class="modify"> <i class="fa-regular fa-pen-to-square bottomIcon"></i> modifier </div>
+				</div>
+				<div id="categoryFilters"></div>
+				
 				<div id="gallery" class="gallery">
+					
 				</div>
 			</section>
 			<section id="contact">
@@ -69,6 +121,7 @@
 					<input type="submit" value="Envoyer">
 				</form>
 			</section>
+			
 		</main>
 
 		<footer>
